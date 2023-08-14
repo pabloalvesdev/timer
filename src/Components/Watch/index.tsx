@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Watch = ({ t }: Props) => {
-    const [tasks, setTaks] = useState<ITask[]>(t);
+    const [tasks, setTasks] = useState<ITask[]>(t);
     const [actualTask, setActualTask] = useState(0);
     const [leftSeconds, setLeftSeconds] = useState(tasks[actualTask].duration);
     const [taskTransition, setTaskTransition] = useState(5);
@@ -23,14 +23,14 @@ const Watch = ({ t }: Props) => {
     }
 
     const startTask = () => {
-        tasks[actualTask].state = 'execute';
+        atualizarEstadoTask(actualTask, tasks[actualTask], 'execute')
     }
-    // const loadNextTask = () => {
-    //     const newTask = tasks[actualTask.position]
-    //     console.log(`Carregando próxima task: ${newTask.title}`)
-    //     setActualTask(newTask)
-    //     setLeftSeconds(newTask.duration)
-    // }
+    const loadNextTask = () => {
+        const newTask = actualTask + 1;
+        console.log(`Carregando próxima task: ${tasks[newTask]}`);
+        setActualTask(newTask);
+        setLeftSeconds(tasks[newTask].duration);
+    }
 
     // const verifyMode = () => {
     //     let result;
@@ -42,18 +42,28 @@ const Watch = ({ t }: Props) => {
     //     console.log(result);
     //     return result
     // }
-   
+    const atualizarEstadoTask = (indice: number, novaTask: ITask, action: "waiting" | "execute" | "finished" | "transition") => {
+        const novasTasks = [...tasks]; // Criando uma cópia do array de tasks
+        novasTasks[indice] = {
+            duration: tasks[indice].duration,
+            position: tasks[indice].position,
+            state: action,
+            title: tasks[indice].title
+        }; // Atualizando o task específico
+        setTasks(novasTasks); // Atualizando o estado com o novo array de alunos
+      };
     useEffect(()=>{
         if(tasks[actualTask].state === 'execute' && leftSeconds >= 1) countDown();
-        if(tasks[actualTask].state === 'execute' && leftSeconds == 0) {
-            tasks[actualTask].state = 'finished';
-            setActualTask(a => a+1)
+        if(tasks[actualTask].state === 'execute' && leftSeconds === 0) {
+            atualizarEstadoTask(actualTask, tasks[actualTask], 'finished')
+            setActualTask(a => a+1);
+            loadNextTask();
         }
         // if(tasks[actualTask].state === 'finished'){
         //     loadNextTask();
         // }
-        console.log(tasks[actualTask].state)
-    },[])
+        console.log(`Task atual é: ${tasks[actualTask].title} e está ${tasks[actualTask].state}`);
+    },[tasks, leftSeconds])
 
     return(
         <Container>
@@ -79,7 +89,7 @@ const Watch = ({ t }: Props) => {
               }}
             >
                 {tasks[actualTask].state === 'waiting' && <button onClick={startTask}>Iniciar</button>}
-                {tasks[actualTask].state === 'execute' && (
+                {tasks[actualTask].state !== 'finished' && (
                     <>
                         <Text>{convertToClock(leftSeconds)}</Text>
                         <Text>{tasks[actualTask].title}</Text>
