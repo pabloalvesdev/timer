@@ -1,12 +1,10 @@
 interface ITask {
-    id?: number;
+    position: number;
     title: string;
-    placerate: number;
-    servicerate: number;
-    foodrate: number;
-    tags?: string;
-    attrs?: string;
-    visited: boolean;
+    duration: number;
+    // started: boolean;
+    // finished: boolean;
+    state: 'waiting' | 'execute' | 'finished' | 'transition'
 };
 
 export default ITask;

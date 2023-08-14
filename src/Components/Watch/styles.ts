@@ -6,3 +6,9 @@ export const Container = styled.div`
         height: 400px;
     `}
 `;
+
+export const Text = styled.p`
+    ${({ theme }) => css`
+        color: ${theme.text.primary};
+    `}
+`;
