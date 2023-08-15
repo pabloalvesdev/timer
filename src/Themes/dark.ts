@@ -1,7 +1,9 @@
 // import { grey } from "@mui/material/colors";
 // import { ITheme } from "../Interfaces";
 
-const dark: any = {
+import { ITheme } from "../Interfaces";
+
+const dark: ITheme = {
     background: {
         //default: '#2B2D42',
         default: '#202231',
@@ -18,7 +20,8 @@ const dark: any = {
     confirm: '#06d6a0',
     cancel: '#dd2d4a',
     warning: 'yellow',
-    transition: 0.25
+    transition: 0.25,
+    shadow: ''
 }
 
 export default dark;

@@ -1,36 +1,65 @@
-import React, { useEffect, useState } from "react";
-import { Container, Text } from "./styles";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Container } from "./styles";
 import { CircularProgressbar, CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
 import ITask from "../../Interfaces/ITask";
+import { useAppContext } from "../../Context";
+import Themes from "../../Themes";
+import Text from "../Text";
 
-interface Props {
-    t: ITask[];
-}
 
-const Watch = ({ t }: Props) => {
-    const [tasks, setTasks] = useState<ITask[]>(t);
-    const [actualTask, setActualTask] = useState(0);
-    const [leftSeconds, setLeftSeconds] = useState(tasks[actualTask].duration || 0);
+const Watch = () => {
+    const { theme, tasks, setTasks, currentTask, setCurrentTask } = useAppContext();
+    const currentTheme = Themes["dark"];
+  
+    const [transition, setTransition] = useState(5);
+    const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask].duration || 0);
     const [allFinished, setAllFinished] = useState<boolean>(false);
-    const convertToClock = (sec: number): string => {
-        const hour = Math.trunc(sec/3600).toString().length > 1 ? Math.trunc(sec/3600).toFixed() : `0${Math.trunc(sec/3600).toFixed()}`;
-        const minutes = Math.trunc(sec/60).toString().length > 1 ? Math.trunc(sec/60).toFixed() : `0${Math.trunc(sec/60).toFixed()}`;;
-        const leftSeconds = Math.trunc(((sec/60)-Math.trunc(sec/60))*60).toString().length > 1 ? (((sec/60)-Math.trunc(sec/60))*60).toFixed() : `0${(((sec/60)-Math.trunc(sec/60))*60).toFixed()}`;
-        return `${hour}:${minutes}:${leftSeconds}`;
+    
+    //functions
+    const hexToRGBA = (hex: string, alpha: number = 1): string => {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) {
+            hex = hex
+            .split('')
+            .map(char => char + char)
+            .join('');
+        }
+        const r = parseInt(hex.slice(0, 2), 16);
+        const g = parseInt(hex.slice(2, 4), 16);
+        const b = parseInt(hex.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    const formatTime = (time: number) => {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+      
+        const formattedTime = {
+          hour: hours < 10 ? `0${hours}` : `${hours}`,
+          minutes: minutes < 10 ? `0${minutes}` : `${minutes}`,
+          seconds: seconds < 10 ? `0${seconds}` : `${seconds}`
+        };
+      
+        return formattedTime;
     }
     const countDown = () => {
         setTimeout(() => setLeftSeconds(a => a-1), 1000);
     }
+    const countDownTransition = () => {
+        setTimeout(() => setTransition(a => a-1), 1000);
+    }
 
     const startTask = () => {
-        atualizarEstadoTask(actualTask, 'execute')
+        atualizarEstadoTask(currentTask, 'execute')
     }
     const loadNextTask = () => {
-        const newTask = actualTask + 1;
+        const newTask = currentTask + 1;
         if(tasks[newTask] !== undefined){
             console.log(`Carregando próxima task: ${tasks[newTask]}`);
-            setActualTask(newTask);
+            setCurrentTask(newTask);
             setLeftSeconds(tasks[newTask].duration);
+            setTransition(5);
         } else {
             setAllFinished(true)
         }
@@ -47,28 +76,30 @@ const Watch = ({ t }: Props) => {
         setTasks(novasTasks); // Atualizando o estado com o novo array de alunos
       };
     useEffect(()=>{
-        if(tasks[actualTask].state === 'execute' && leftSeconds >= 1) countDown();
-        if(tasks[actualTask].state === 'execute' && leftSeconds === 0) {
-            atualizarEstadoTask(actualTask, 'finished')
-            setTimeout(()=>loadNextTask(), 5000)
+        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1) countDown();
+        if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition()
+        if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
+            atualizarEstadoTask(currentTask, 'finished')
+            if(tasks[currentTask+1] === undefined) setAllFinished(true)
+            else setTimeout(()=>loadNextTask(), 5000)
         }
-        console.log(`Task atual é: ${tasks[actualTask].title} e está ${tasks[actualTask].state}`);
-    },[tasks, leftSeconds])
+        console.log(`Task atual é: ${tasks[currentTask].title} e está ${tasks[currentTask].state}`);
+    },[tasks, leftSeconds, transition])
 
     return(
         <Container>
             <CircularProgressbarWithChildren
-            value={100-((leftSeconds/tasks[actualTask].duration)*100)}
+            value={100-((leftSeconds/tasks[currentTask].duration)*100)}
             styles={{
                 path: {
-                  stroke: `rgba(62, 152, 199, 1)`,
+                  stroke: currentTheme.primary,
                   strokeLinecap: 'round',
                   transition: 'stroke-dashoffset 0.5s ease 0s',
                   transform: 'rotate(1turn)',
                   transformOrigin: 'center center',
                 },
                 trail: {
-                  stroke: '#d6d6d6',
+                  stroke: hexToRGBA(currentTheme.primary, 0.3),
                   strokeLinecap: 'butt',
                   transform: 'rotate(0.25turn)',
                   transformOrigin: 'center center',
@@ -78,21 +109,26 @@ const Watch = ({ t }: Props) => {
                 },
               }}
             >
-                {tasks[actualTask].state === 'waiting' && <button onClick={startTask}>Iniciar</button>}
-                {tasks[actualTask].state !== 'finished' && (
+                {tasks[currentTask].state !== 'finished' && (
                     <>
-                        <Text>{convertToClock(leftSeconds)}</Text>
-                        <Text>{tasks[actualTask].title}</Text>
+                        {/* <Text className="clock bold">{convertToClock(leftSeconds)}</Text> */}
+                        <div style={{display: 'flex', alignItems: 'baseline'}}>
+                            <Text className="clock bold">{formatTime(leftSeconds).hour}:{formatTime(leftSeconds).minutes}</Text>
+                            <Text className="bold">{formatTime(leftSeconds).seconds} s</Text>
+                        </div>
+                        <Text className="bold">{tasks[currentTask].title}</Text>
                     </>
                 )}
-                {(leftSeconds === 0 && tasks[actualTask].state === "finished" && !allFinished) && (
+                {(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) && (
                     <>
-                        <Text>Fim da Tarefa {tasks[actualTask].title}</Text>
-                        <Text>Preparando para {tasks[actualTask+1]?.title}</Text>
+                        <Text><b>{tasks[currentTask].title}</b> finalizada</Text>
+                        {/* <Text>Preparando para {tasks[currentTask+1]?.title}</Text> */}
+                        <Text><b>{tasks[currentTask+1]?.title}</b> estará pronta em <b>{transition}</b></Text>
                     </>
                 )}
-                {allFinished && <Text>Fim de Tudo, insira novas tasks</Text>}
-            </CircularProgressbarWithChildren>;
+                <Button className={tasks[currentTask].state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
+                {allFinished && <Text>Parabéns!!! Você finalizou tudo. Insira novas tasks</Text>}
+            </CircularProgressbarWithChildren>
         </Container>
     )
 };
