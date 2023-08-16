@@ -1,53 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Container } from "./styles";
+import { Container } from "./styles";
 import { CircularProgressbar, CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
 import ITask from "../../Interfaces/ITask";
 import { useAppContext } from "../../Context";
 import Themes from "../../Themes";
 import Text from "../Text";
+import { Button } from "../Button";
+import { formatTime, hexToRGBA } from "../../Utils/utils";
 
 
 const Watch = () => {
     const { theme, tasks, setTasks, currentTask, setCurrentTask } = useAppContext();
     const currentTheme = Themes["dark"];
-  
+
     const [transition, setTransition] = useState(5);
+    const [pomodoro, setPomodoro] = useState(0);
     const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask].duration || 0);
     const [allFinished, setAllFinished] = useState<boolean>(false);
     
     //functions
-    const hexToRGBA = (hex: string, alpha: number = 1): string => {
-        hex = hex.replace('#', '');
-        if (hex.length === 3) {
-            hex = hex
-            .split('')
-            .map(char => char + char)
-            .join('');
-        }
-        const r = parseInt(hex.slice(0, 2), 16);
-        const g = parseInt(hex.slice(2, 4), 16);
-        const b = parseInt(hex.slice(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
-
-    const formatTime = (time: number) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = time % 60;
-      
-        const formattedTime = {
-          hour: hours < 10 ? `0${hours}` : `${hours}`,
-          minutes: minutes < 10 ? `0${minutes}` : `${minutes}`,
-          seconds: seconds < 10 ? `0${seconds}` : `${seconds}`
-        };
-      
-        return formattedTime;
-    }
     const countDown = () => {
-        setTimeout(() => setLeftSeconds(a => a-1), 1000);
+        setTimeout(() => setLeftSeconds(a => a-1), 10);
     }
     const countDownTransition = () => {
         setTimeout(() => setTransition(a => a-1), 1000);
+    }
+    const countDownPomodoro = () => {
+        setTimeout(() => setPomodoro(a => a-1), 1000);
     }
 
     const startTask = () => {
@@ -74,22 +53,27 @@ const Watch = () => {
             title: tasks[indice].title
         }; // Atualizando o task específico
         setTasks(novasTasks); // Atualizando o estado com o novo array de alunos
-      };
+    };
+    const pomodoroRest = () => {
+        setPomodoro(300);
+    }
     useEffect(()=>{
-        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1) countDown();
-        if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition()
+        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro === 0) countDown();
+        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro > 0) countDownPomodoro();
+        if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition();
         if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
             atualizarEstadoTask(currentTask, 'finished')
             if(tasks[currentTask+1] === undefined) setAllFinished(true)
             else setTimeout(()=>loadNextTask(), 5000)
         }
+        if(leftSeconds !== tasks[currentTask].duration && leftSeconds % 1500 === 0 && tasks[currentTask].state === 'execute') pomodoroRest();
         console.log(`Task atual é: ${tasks[currentTask].title} e está ${tasks[currentTask].state}`);
-    },[tasks, leftSeconds, transition])
+    },[tasks, leftSeconds, transition, pomodoro])
 
     return(
         <Container>
             <CircularProgressbarWithChildren
-            value={100-((leftSeconds/tasks[currentTask].duration)*100)}
+            value={pomodoro > 0 ? 100-((pomodoro/300)*100) : 100-((leftSeconds/tasks[currentTask].duration)*100)}
             styles={{
                 path: {
                   stroke: currentTheme.primary,
@@ -109,7 +93,7 @@ const Watch = () => {
                 },
               }}
             >
-                {tasks[currentTask].state !== 'finished' && (
+                {(tasks[currentTask].state !== 'finished' && pomodoro === 0)&& (
                     <>
                         {/* <Text className="clock bold">{convertToClock(leftSeconds)}</Text> */}
                         <div style={{display: 'flex', alignItems: 'baseline'}}>
@@ -119,6 +103,16 @@ const Watch = () => {
                         <Text className="bold">{tasks[currentTask].title}</Text>
                     </>
                 )}
+                {pomodoro > 0 && (
+                    <>
+                        <div style={{display: 'flex', alignItems: 'baseline'}}>
+                            <Text className="clock bold">{formatTime(pomodoro).hour}:{formatTime(pomodoro).minutes}</Text>
+                            <Text className="bold">{formatTime(pomodoro).seconds} s</Text>
+                        </div>
+                        <Text className="bold">Pomodoro</Text>
+                        <Text>Pausa de 5 min, vai tomar um cafe</Text>
+                    </>
+                )}
                 {(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) && (
                     <>
                         <Text><b>{tasks[currentTask].title}</b> finalizada</Text>
@@ -126,7 +120,7 @@ const Watch = () => {
                         <Text><b>{tasks[currentTask+1]?.title}</b> estará pronta em <b>{transition}</b></Text>
                     </>
                 )}
-                <Button className={tasks[currentTask].state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
+                <Button className={tasks[currentTask].state === 'waiting' ? 'absolute':'hide absolute'} onClick={startTask}>Iniciar</Button>
                 {allFinished && <Text>Parabéns!!! Você finalizou tudo. Insira novas tasks</Text>}
             </CircularProgressbarWithChildren>
         </Container>

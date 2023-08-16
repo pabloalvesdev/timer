@@ -5,25 +5,40 @@ import { useAppContext } from "../../Context";
 import { useEffect, useMemo, useState } from "react";
 import ITask from "../../Interfaces/ITask";
 import ListItem from "./Components/ListItem";
-import { friendlyHour } from "../../Utils/Time";
+import { friendlyHour } from "../../Utils/utils";
+import AddEditModal from "./Components/AddEditModal";
+import { Icon } from "../Icon";
+import { Title } from "./Components/AddEditModal/styles";
 
 const Tasks = () => {
     const { tasks, currentTask } = useAppContext();
     const [nextTask, setNextTask] = useState<ITask>(tasks[currentTask+1]);
-    const getNewTask = () => console.log(tasks)
+    const [visibleModal, setVisibleModal] = useState<boolean>(false);
+    const callModal = () => setVisibleModal(true)
     useEffect(()=>{
         setNextTask(tasks[currentTask+1])
     }, [currentTask])
     return(
         <Row>
+            <AddEditModal visible={visibleModal} setVisible={setVisibleModal} />
             <Col>
-                <Text className="bold" onClick={()=>getNewTask()}>Proxima Tarefa</Text>
-                <Card className="more-pg">
-                    <Text className="bold">{`${nextTask.title} - ${friendlyHour(nextTask.duration)}`|| 'Nada'}</Text>
+                <Card>
+                    <Title><b>Próxima</b></Title>
+                    <ListItem item={nextTask} />
+                    {/* <Text className="bold">{`${nextTask.title} - ${friendlyHour(nextTask.duration)}`|| 'Nada'}</Text> */}
                 </Card>
                 <br />
-                <Text className="bold">Fila de Tarefas</Text>
-                <Card>
+                <Card className="more-pg">
+                    <Row>
+                        <Col xs={11}>
+                            <Title className="bold"><b>Fila</b></Title>
+                        </Col>
+                        <Col xs={1}>
+                            <Row>
+                                <Icon onClick={callModal} className="fa fa-plus" aria-hidden="true" />
+                            </Row>
+                        </Col>
+                    </Row>
                     {tasks.filter((x, i) => i !== currentTask && i !== (currentTask + 1) && x.state !== "finished").map(a => <ListItem item={a} />)}
                 </Card>
             </Col>

@@ -13,10 +13,9 @@ export const Card = styled.div`
         padding-inline: 30px;
         padding-block: 10px;
         width: 100%;
-        height: 350px;
         &.more-pg {
-            padding: 30px !important;
-            height: auto !important;
+            height: 350px;
+            /* overflow-y: scroll; */
         }
     `}
 `;
