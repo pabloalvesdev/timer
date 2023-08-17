@@ -20,7 +20,7 @@ const Watch = () => {
     
     //functions
     const countDown = () => {
-        setTimeout(() => setLeftSeconds(a => a-1), 10);
+        setTimeout(() => setLeftSeconds(a => a-1), 1000);
     }
     const countDownTransition = () => {
         setTimeout(() => setTransition(a => a-1), 1000);
@@ -54,20 +54,18 @@ const Watch = () => {
         }; // Atualizando o task específico
         setTasks(novasTasks); // Atualizando o estado com o novo array de alunos
     };
-    const pomodoroRest = () => {
-        setPomodoro(300);
-    }
+    
     useEffect(()=>{
         if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro === 0) countDown();
         if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro > 0) countDownPomodoro();
         if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition();
+        if(leftSeconds !== tasks[currentTask].duration && leftSeconds % 1500 === 0 && tasks[currentTask].state === 'execute' && pomodoro === 0 && leftSeconds !== 0) setPomodoro(300);
         if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
             atualizarEstadoTask(currentTask, 'finished')
             if(tasks[currentTask+1] === undefined) setAllFinished(true)
             else setTimeout(()=>loadNextTask(), 5000)
         }
-        if(leftSeconds !== tasks[currentTask].duration && leftSeconds % 1500 === 0 && tasks[currentTask].state === 'execute') pomodoroRest();
-        console.log(`Task atual é: ${tasks[currentTask].title} e está ${tasks[currentTask].state}`);
+            // console.log(`Task atual é: ${tasks[currentTask].title} e está ${tasks[currentTask].state}`);
     },[tasks, leftSeconds, transition, pomodoro])
 
     return(

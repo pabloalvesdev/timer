@@ -1,0 +1,8 @@
+{
+    "tasks": [
+        { "position": 1, "title": "Trabalho - Manhã", "duration": 10800, "state": "waiting" },
+        { "position": 2, "title": "Trabalho - Tarde (Pré-Daily)", "duration": 3600, "state": "waiting" },
+        { "position": 3, "title": "Trabalho - Tarde (Pós-Daily)", "duration": 3600, "state": "waiting" },
+        { "position": 4, "title": "Leitura", "duration": 3600, "state": "waiting" }
+    ]
+}

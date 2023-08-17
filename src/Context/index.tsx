@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import { ITheme } from "../Interfaces";
 import ITask from "../Interfaces/ITask";
+import DefaultJson from "../defalttasks.json";
 
 type ThemeEnum = "light" | "dark";
 
@@ -21,11 +22,7 @@ const AppContext = createContext<IAppContext>({} as IAppContext);
 
 const AppContextProvider = ({ children }: Props) => {
     const [theme, setTheme] = useState<ThemeEnum>("dark");
-    const [tasks, setTasks] = useState<ITask[]>([
-        { position: 1, title: 'Primeira Task', duration: 3000, state: 'waiting' },
-        { position: 2, title: 'Segunda Task', duration: 90, state: 'waiting' },
-        { position: 3, title: 'Terceira Task', duration: 70, state: 'waiting' }
-    ]);
+    const [tasks, setTasks] = useState<ITask[]>(DefaultJson.tasks as ITask[]);
     const [currentTask, setCurrentTask] = useState(0);
     const values = useMemo<IAppContext>(()=>({
         theme,

@@ -1,11 +1,11 @@
 import React from "react";
-import ITask from "../../../../Interfaces/ITask";
+import ITask from "../../../Interfaces/ITask";
 import { Container } from "./styles";
-import Text from "../../../Text";
-import { friendlyHour } from "../../../../Utils/utils";
-import { Icon } from "../../../Icon";
+import Text from "../../Text";
+import { friendlyHour } from "../../../Utils/utils";
+import { Icon } from "../../Icon";
 import { Col, Row } from "react-bootstrap";
-import { useAppContext } from "../../../../Context";
+import { useAppContext } from "../../../Context";
 
 interface Props {
     item: ITask;
