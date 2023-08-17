@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
-import { ITheme } from "../Interfaces";
+import { IDialog, ITheme } from "../Interfaces";
 import ITask from "../Interfaces/ITask";
 import DefaultJson from "../defalttasks.json";
 
@@ -12,6 +12,8 @@ interface IAppContext {
     setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
     currentTask: number;
     setCurrentTask: React.Dispatch<React.SetStateAction<number>>;
+    dialog: IDialog;
+    setDialog: React.Dispatch<React.SetStateAction<IDialog>>;
 };
 
 interface Props {
@@ -22,6 +24,7 @@ const AppContext = createContext<IAppContext>({} as IAppContext);
 
 const AppContextProvider = ({ children }: Props) => {
     const [theme, setTheme] = useState<ThemeEnum>("dark");
+    const [dialog, setDialog] = useState<IDialog>({} as IDialog);
     const [tasks, setTasks] = useState<ITask[]>(DefaultJson.tasks as ITask[]);
     const [currentTask, setCurrentTask] = useState(0);
     const values = useMemo<IAppContext>(()=>({
@@ -30,8 +33,10 @@ const AppContextProvider = ({ children }: Props) => {
         tasks,
         setTasks,
         currentTask,
-        setCurrentTask
-    }), [theme, setTheme, tasks, setTasks, currentTask, setCurrentTask]);
+        setCurrentTask,
+        dialog,
+        setDialog
+    }), [theme, setTheme, tasks, setTasks, currentTask, setCurrentTask, dialog,setDialog]);
     return(
         <AppContext.Provider value={values}>{children}</AppContext.Provider>
     )

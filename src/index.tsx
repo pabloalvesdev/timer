@@ -6,6 +6,7 @@ import App from './App';
 import GlobalStyles from './Styles/GlobalStyles';
 import AppContextProvider from './Context';
 import AppTemplate from './Template';
+import Dialog from './Components/Dialog';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +16,7 @@ root.render(
     <AppContextProvider>
       <AppTemplate>
         <GlobalStyles />
+        <Dialog />
         <App />
       </AppTemplate>
     </AppContextProvider>

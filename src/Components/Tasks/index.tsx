@@ -4,11 +4,11 @@ import { Card, Container } from "./styles";
 import { useAppContext } from "../../Context";
 import { useEffect, useMemo, useState } from "react";
 import ITask from "../../Interfaces/ITask";
-import ListItem from "../Components/ListItem";
+import ListItem from "../../Components/ListItem";
 import { friendlyHour } from "../../Utils/utils";
-import AddEditModal from "../Components/AddEditModal";
+import AddEditModal from "../AddEditModal";
 import { Icon } from "../Icon";
-import { Title } from "../Components/AddEditModal/styles";
+import { Title } from "../AddEditModal/styles";
 
 const Tasks = () => {
     const { tasks, currentTask } = useAppContext();

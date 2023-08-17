@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import ITask from "../../../Interfaces/ITask";
+import ITask from "../../Interfaces/ITask";
 import { Body, Header, Input, InputLabel, InvalidText, Title } from "./styles";
-import { Button } from "../../Button";
-import { useAppContext } from "../../../Context";
+import { Button } from "../Button";
+import { useAppContext } from "../../Context";
 
 interface Props {
     visible: boolean;

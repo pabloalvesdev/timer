@@ -118,7 +118,7 @@ const Watch = () => {
                         <Text><b>{tasks[currentTask+1]?.title}</b> estará pronta em <b>{transition}</b></Text>
                     </>
                 )}
-                <Button className={tasks[currentTask].state === 'waiting' ? 'absolute':'hide absolute'} onClick={startTask}>Iniciar</Button>
+                <Button className={tasks[currentTask].state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
                 {allFinished && <Text>Parabéns!!! Você finalizou tudo. Insira novas tasks</Text>}
             </CircularProgressbarWithChildren>
         </Container>

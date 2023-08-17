@@ -14,8 +14,5 @@ export const Button = styled.button`
         &.hide {
             visibility: hidden;
         }
-        &.absolute {
-            position: absolute;
-        }
     `}
 `;
