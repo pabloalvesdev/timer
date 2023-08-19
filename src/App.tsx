@@ -3,25 +3,25 @@ import Watch from './Components/Watch';
 import ITask from './Interfaces/ITask';
 import Tasks from './Components/Tasks';
 import { Col, Container, Row } from 'react-bootstrap';
+import Themes from './Themes';
+import { useAppContext } from './Context';
 
 function App() {
-  
+  const { theme } = useAppContext();
   return (
     <Container>
       <br /><br />
-      <Row xs={12}>
-        <Col />
-        <Col md={12} lg={8}>
+      <Row>
+        <Col>
           <Row>
-            <Col sm={12} md={6}>
+            <Col style={{backgroundColor: Themes[theme].background.alternative, borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}} lg={6} sm={12}>
               <Watch />
             </Col>
-            <Col sm={12} md={6}>
+            <Col lg={6} sm={12}>
               <Tasks />
             </Col>
           </Row>
         </Col>
-        <Col/>
       </Row>
     </Container>
   );

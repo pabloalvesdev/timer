@@ -43,6 +43,20 @@ export const Input = styled.input`
     `}
 `;
 
+export const TimeInput = styled.input`
+    ${({ theme }) => css`
+        padding: 2px;
+        text-align: center;
+        background: ${theme.background.alternative};
+        border: 2px solid ${theme.primary};
+        color: ${theme.text.primary};
+        outline: none;
+        border-radius: 5px;
+        width: 30px;
+    `}
+`;
+
+
 export const InvalidText = styled.p`
     ${({ theme }) => css`
         margin-top: 10px;

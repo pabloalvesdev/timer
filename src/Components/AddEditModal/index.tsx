@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import ITask from "../../Interfaces/ITask";
-import { Body, Header, Input, InputLabel, InvalidText, Title } from "./styles";
+import { Body, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
 import { Button } from "../Button";
 import { useAppContext } from "../../Context";
 
@@ -44,7 +44,11 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
                 <Row>
                     <Col>
                         <InputLabel>Duração</InputLabel>
-                        <Input value={task.duration} onChange={(a: any) => setTask(prev => ({...prev, duration: a.target.value}))} type="text" />
+                        <Row>
+                            <TimeInput maxLength={2} value={task.duration} onChange={(a: any) => setTask(prev => ({...prev, duration: a.target.value}))} type="text" />
+                            <TimeInput maxLength={2} value={task.duration} onChange={(a: any) => setTask(prev => ({...prev, duration: a.target.value}))} type="text" />
+                            <TimeInput maxLength={2} value={task.duration} onChange={(a: any) => setTask(prev => ({...prev, duration: a.target.value}))} type="text" />
+                        </Row>
                     </Col>
                 </Row>
                 <br /><br />

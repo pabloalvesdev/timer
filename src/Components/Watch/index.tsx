@@ -50,22 +50,30 @@ const Watch = () => {
             duration: tasks[indice].duration,
             position: tasks[indice].position,
             state: action,
-            title: tasks[indice].title
+            title: tasks[indice].title,
+            pomodoro: tasks[indice].pomodoro
         }; // Atualizando o task específico
         setTasks(novasTasks); // Atualizando o estado com o novo array de alunos
     };
+
+    const availableToPomodoro = (secs: number): boolean => {
+        const task = tasks[currentTask];
+        if(task.pomodoro) {
+            const pomodoroValues = [1,2,3,4,5,6,7,8,9].map(a => task.duration-a*1500).filter(a => a > 0);
+            return pomodoroValues.includes(secs);
+        } else return false;
+    }
     
     useEffect(()=>{
         if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro === 0) countDown();
         if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro > 0) countDownPomodoro();
         if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition();
-        if(leftSeconds !== tasks[currentTask].duration && leftSeconds % 1500 === 0 && tasks[currentTask].state === 'execute' && pomodoro === 0 && leftSeconds !== 0) setPomodoro(300);
+        if(leftSeconds !== tasks[currentTask].duration && availableToPomodoro(leftSeconds) && tasks[currentTask].state === 'execute' && pomodoro === 0 && leftSeconds !== 0) setPomodoro(300);
         if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
             atualizarEstadoTask(currentTask, 'finished')
             if(tasks[currentTask+1] === undefined) setAllFinished(true)
             else setTimeout(()=>loadNextTask(), 5000)
         }
-            // console.log(`Task atual é: ${tasks[currentTask].title} e está ${tasks[currentTask].state}`);
     },[tasks, leftSeconds, transition, pomodoro])
 
     return(
@@ -74,7 +82,7 @@ const Watch = () => {
             value={pomodoro > 0 ? 100-((pomodoro/300)*100) : 100-((leftSeconds/tasks[currentTask].duration)*100)}
             styles={{
                 path: {
-                  stroke: currentTheme.primary,
+                  stroke: pomodoro > 0 ? currentTheme.cancel : currentTheme.primary,
                   strokeLinecap: 'round',
                   transition: 'stroke-dashoffset 0.5s ease 0s',
                   transform: 'rotate(1turn)',
@@ -104,8 +112,7 @@ const Watch = () => {
                 {pomodoro > 0 && (
                     <>
                         <div style={{display: 'flex', alignItems: 'baseline'}}>
-                            <Text className="clock bold">{formatTime(pomodoro).hour}:{formatTime(pomodoro).minutes}</Text>
-                            <Text className="bold">{formatTime(pomodoro).seconds} s</Text>
+                            <Text className="clock bold">{formatTime(pomodoro).minutes}:{formatTime(pomodoro).seconds}</Text>
                         </div>
                         <Text className="bold">Pomodoro</Text>
                         <Text>Pausa de 5 min, vai tomar um cafe</Text>
