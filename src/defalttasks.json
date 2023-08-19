@@ -3,6 +3,8 @@
         { "position": 1, "title": "Trabalho - Manhã", "pomodoro": true, "duration": 10800, "state": "waiting" },
         { "position": 2, "title": "Trabalho - Tarde (Pré-Daily)", "pomodoro": true, "duration": 3600, "state": "waiting" },
         { "position": 3, "title": "Trabalho - Tarde (Pós-Daily)", "pomodoro": true, "duration": 3600, "state": "waiting" },
-        { "position": 4, "title": "Leitura", "duration": 3600, "state": "waiting" }
+        { "position": 4, "title": "Leitura", "duration": 3600, "state": "waiting" },
+        { "position": 5, "title": "Leitura 1", "duration": 3600, "state": "waiting" },
+        { "position": 6, "title": "Leitura 2", "duration": 3600, "state": "waiting" }
     ]
 }
