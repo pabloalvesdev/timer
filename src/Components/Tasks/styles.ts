@@ -15,7 +15,14 @@ export const Card = styled.div`
         width: 100%;
         &.more-pg {
             height: 350px;
-            overflow-y: scroll;
+            /* overflow-y: scroll; */
         }
+    `}
+`;
+
+export const List = styled.div`
+    ${({ theme }) => css`
+        overflow-y: scroll;
+        height: 85%;
     `}
 `;

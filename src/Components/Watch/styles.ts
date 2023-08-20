@@ -2,7 +2,7 @@ import { css, styled } from "styled-components";
 
 export const Container = styled.div`
     ${({ theme }) => css`
-        width: 80%;
+        width: 60%;
         background-color: ${theme.background.alternative};
         border-radius: 10px;
         padding: 20px;
