@@ -12,7 +12,6 @@ const MobileLayout = ({ children }: Props) => {
     const { theme } = useAppContext();
     return(
         <Container>
-            <br /><br />
             <WatchContainer>
                 {children[0]}
                 {children[1]}

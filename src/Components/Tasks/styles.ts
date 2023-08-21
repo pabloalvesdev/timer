@@ -14,8 +14,11 @@ export const Card = styled.div`
         padding-block: 10px;
         width: 100%;
         &.more-pg {
-            height: 350px;
+            height: 30vh;
             /* overflow-y: scroll; */
+        }
+        @media (max-width: 990px) {
+            padding: 0px;
         }
     `}
 `;

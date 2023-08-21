@@ -7,5 +7,8 @@ export const Container = styled.div`
         border-radius: 10px;
         margin-block: 30px;
         padding: 20px;
+        @media (max-width: 990px) {
+            margin: 5 !important;
+        }
     `}
 `;
