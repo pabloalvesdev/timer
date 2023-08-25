@@ -30,9 +30,11 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
         setVisible(false);
         setTask({} as ITask);
     }
+    const availableToPomodoro = (n: number) => (n % 2 === 0 && n % 3 === 0 && n % 5 === 0 && n % 1800 === 0);
     const handleSave = () => {
-        const totalTime = time.hour*3600+time.minute*60+time.second;
+        const totalTime = (time.hour*3600)+(time.minute*60)+time.second;
         setTask(prev => ({...prev, duration: totalTime}))
+        availableToPomodoro(totalTime) ? alert("Serve pra fazer pomodoro") : alert("Não serve pra fazer pomodoro");
         alert(JSON.stringify(task));
         // setTasks(prev => ([...prev, task]));
         // handleClose();
