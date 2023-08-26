@@ -32,7 +32,8 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
     }
     const availableToPomodoro = (n: number) => (n % 2 === 0 && n % 3 === 0 && n % 5 === 0 && n % 1800 === 0);
     const handleSave = () => {
-        const totalTime = (time.hour*3600)+(time.minute*60)+time.second;
+        const totalTime = (time.hour*3600)+(time.minute*60)+Number(time.second);
+        debugger;
         setTask(prev => ({...prev, duration: totalTime}))
         availableToPomodoro(totalTime) ? alert("Serve pra fazer pomodoro") : alert("Não serve pra fazer pomodoro");
         alert(JSON.stringify(task));
@@ -59,14 +60,26 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <InputLabel style={{width: '100%'}}>Duração</InputLabel>
-                        <Row>
+                        <InputLabel>Tempo</InputLabel>
+                        <br />
+                        <TimeInput maxLength={2} value={time.hour} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="text" />
+                        <TimeInput maxLength={2} value={time.minute} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="text" />
+                        <TimeInput maxLength={2} value={time.second} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="text" />
+                        
+                    </Col>
+                </Row>
+                {/* <Row style={{backgroundColor: 'green', padding: 0, width: '100%'}}>
+                        <Col>
+                            <InputLabel>Duração</InputLabel>
+                        
+                        <Row style={{backgroundColor: 'blue', width: '100%'}}>
                             <TimeInput maxLength={2} value={time.hour} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="text" />
                             <TimeInput maxLength={2} value={time.minute} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="text" />
                             <TimeInput maxLength={2} value={time.second} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="text" />
                         </Row>
-                    </Col>
-                </Row>
+                        </Col>
+                    
+                </Row> */}
                 <br /><br />
                 <Button onClick={handleSave}>Salvar</Button>
             </Body>

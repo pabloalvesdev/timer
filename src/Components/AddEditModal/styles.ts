@@ -47,12 +47,13 @@ export const TimeInput = styled.input`
     ${({ theme }) => css`
         padding: 2px;
         text-align: center;
+        font-size: 40px;
         background: ${theme.background.alternative};
-        border: 2px solid ${theme.primary};
+        border: none;
+        border-bottom: 2px solid ${theme.primary};
         color: ${theme.text.primary};
         outline: none;
-        border-radius: 5px;
-        width: 30px;
+        width: 33%;
     `}
 `;
 
