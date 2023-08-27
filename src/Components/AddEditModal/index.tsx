@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import ITask from "../../Interfaces/ITask";
-import { Body, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
+import { Body, ContainerInputs, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
 import { Button } from "../Button";
 import { useAppContext } from "../../Context";
 
@@ -45,6 +45,9 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
         else setInvalid(false)
         setTask(prev => ({...prev, title: e.target.value}))
     };
+    const friendlyTime = (e: number) => {
+        return e.toString().length > 1 ? e : `0${e}`;
+    }
     return(
         <Modal size="sm" show={visible} onHide={handleClose}>
             <Header>
@@ -62,24 +65,15 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
                     <Col>
                         <InputLabel>Tempo</InputLabel>
                         <br />
-                        <TimeInput maxLength={2} value={time.hour} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="text" />
-                        <TimeInput maxLength={2} value={time.minute} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="text" />
-                        <TimeInput maxLength={2} value={time.second} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="text" />
-                        
+                        <ContainerInputs>
+                            <TimeInput min={0} maxLength={2} value={friendlyTime(time.hour)} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="number" />
+                            <InputLabel>:</InputLabel>
+                            <TimeInput min={0} maxLength={2} max={59} value={friendlyTime(time.minute)} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="number" />
+                            <InputLabel>:</InputLabel>
+                            <TimeInput className="seconds" max={59} min={0} maxLength={2} value={friendlyTime(time.second)} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="number" />
+                        </ContainerInputs>
                     </Col>
                 </Row>
-                {/* <Row style={{backgroundColor: 'green', padding: 0, width: '100%'}}>
-                        <Col>
-                            <InputLabel>Duração</InputLabel>
-                        
-                        <Row style={{backgroundColor: 'blue', width: '100%'}}>
-                            <TimeInput maxLength={2} value={time.hour} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="text" />
-                            <TimeInput maxLength={2} value={time.minute} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="text" />
-                            <TimeInput maxLength={2} value={time.second} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="text" />
-                        </Row>
-                        </Col>
-                    
-                </Row> */}
                 <br /><br />
                 <Button onClick={handleSave}>Salvar</Button>
             </Body>

@@ -13,8 +13,6 @@ export const Body = styled(Modal.Body)`
     ${({ theme }) => css`
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         background-color: ${theme.background.default} !important;
     `}
 `;
@@ -48,12 +46,23 @@ export const TimeInput = styled.input`
         padding: 2px;
         text-align: center;
         font-size: 40px;
-        background: ${theme.background.alternative};
+        background: none;
         border: none;
-        border-bottom: 2px solid ${theme.primary};
         color: ${theme.text.primary};
         outline: none;
-        width: 33%;
+        width: 25%;
+        &.seconds {
+            font-size: 20px;
+        }
+    `}
+`;
+
+export const ContainerInputs = styled.div`
+    ${({ theme }) => css`
+        /* margin: 0px; */
+        display: flex;
+        align-items: baseline;
+        justify-content: baseline;
     `}
 `;
 
