@@ -41,21 +41,34 @@ export const Input = styled.input`
     `}
 `;
 
+// export const TimeInput = styled.input`
+//     ${({ theme }) => css`
+//         padding: 2px;
+//         text-align: center;
+//         font-size: 40px;
+//         background: none;
+//         border: none;
+//         color: ${theme.text.primary};
+//         outline: none;
+//         width: 25%;
+//         &.seconds {
+//             font-size: 20px;
+//         }
+//     `}
+// `;
+
 export const TimeInput = styled.input`
     ${({ theme }) => css`
-        padding: 2px;
-        text-align: center;
-        font-size: 40px;
         background: none;
-        border: none;
-        color: ${theme.text.primary};
+        border: 2px solid ${theme.primary};
         outline: none;
-        width: 25%;
-        &.seconds {
-            font-size: 20px;
-        }
+        width: 100%;
+        height: 50px;
+        color: ${theme.text.primary};
+        border-radius: 5px;
     `}
 `;
+
 
 export const ContainerInputs = styled.div`
     ${({ theme }) => css`

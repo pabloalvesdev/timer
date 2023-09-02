@@ -28,6 +28,9 @@ const GlobalStyles = createGlobalStyle`
         body {
             background-color: var(--bg-color);
         }
+        p {
+            color: ${theme.text.primary};
+        }
     `}
 `;
 

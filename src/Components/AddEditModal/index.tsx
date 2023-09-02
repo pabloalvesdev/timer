@@ -4,6 +4,7 @@ import ITask from "../../Interfaces/ITask";
 import { Body, ContainerInputs, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
 import { Button } from "../Button";
 import { useAppContext } from "../../Context";
+import CustomSwitch from "../Switch";
 
 interface Props {
     visible: boolean;
@@ -11,20 +12,10 @@ interface Props {
     item?: ITask;
 }
 
-interface ITime {
-    hour: number;
-    minute: number;
-    second: number;
-}
-
 const AddEditModal = ({ visible, setVisible, item }:Props) => {
     const { tasks, setTasks } = useAppContext();
     const [task, setTask] = useState<ITask>({} as ITask);
-    const [time, setTime] = useState<ITime>({
-        hour: 0,
-        minute: 0,
-        second: 0
-    });
+    const [time, setTime] = useState(0);
     const [invalid, setInvalid] = useState<boolean>(false);
     const handleClose = () => {
         setVisible(false);
@@ -32,10 +23,6 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
     }
     const availableToPomodoro = (n: number) => (n % 2 === 0 && n % 3 === 0 && n % 5 === 0 && n % 1800 === 0);
     const handleSave = () => {
-        const totalTime = (time.hour*3600)+(time.minute*60)+Number(time.second);
-        debugger;
-        setTask(prev => ({...prev, duration: totalTime}))
-        availableToPomodoro(totalTime) ? alert("Serve pra fazer pomodoro") : alert("Não serve pra fazer pomodoro");
         alert(JSON.stringify(task));
         // setTasks(prev => ([...prev, task]));
         // handleClose();
@@ -43,10 +30,12 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
     const valid = (e: React.ChangeEvent<HTMLInputElement>) => {  
         if(tasks.map(a => a.title).includes(e.target.value)) setInvalid(true)
         else setInvalid(false)
-        setTask(prev => ({...prev, title: e.target.value}))
-    };
-    const friendlyTime = (e: number) => {
-        return e.toString().length > 1 ? e : `0${e}`;
+    setTask(prev => ({...prev, title: e.target.value}))
+};
+const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inpText = e.target.value.split(':').map(a => Number(a));
+        const totalTime = (inpText[0]*3600)+(inpText[1]*60);
+        setTask(prev => ({...prev, duration: totalTime}));
     }
     return(
         <Modal size="sm" show={visible} onHide={handleClose}>
@@ -65,16 +54,15 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
                     <Col>
                         <InputLabel>Tempo</InputLabel>
                         <br />
-                        <ContainerInputs>
-                            <TimeInput min={0} maxLength={2} value={friendlyTime(time.hour)} onChange={(a: any) => setTime(prev => ({...prev, hour: a.target.value}))} type="number" />
-                            <InputLabel>:</InputLabel>
-                            <TimeInput min={0} maxLength={2} max={59} value={friendlyTime(time.minute)} onChange={(a: any) => setTime(prev => ({...prev, minute: a.target.value}))} type="number" />
-                            <InputLabel>:</InputLabel>
-                            <TimeInput className="seconds" max={59} min={0} maxLength={2} value={friendlyTime(time.second)} onChange={(a: any) => setTime(prev => ({...prev, second: a.target.value}))} type="number" />
-                        </ContainerInputs>
+                        <TimeInput onChange={handleChangeTime} type="time" />
                     </Col>
                 </Row>
-                <br /><br />
+                <br />
+                <Row style={{ visibility: availableToPomodoro(task.duration) ? 'visible' : 'hidden' }}>
+                    <Col>
+                        <CustomSwitch onChange={() => setTask(prev => ({...prev, pomodoro: !prev.pomodoro}))} labelToSwitch="Habilitar Pomodoro?" />
+                    </Col>
+                </Row>
                 <Button onClick={handleSave}>Salvar</Button>
             </Body>
         </Modal>

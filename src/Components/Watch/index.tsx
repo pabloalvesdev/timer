@@ -7,6 +7,7 @@ import Themes from "../../Themes";
 import Text from "../Text";
 import { Button } from "../Button";
 import { formatTime, hexToRGBA } from "../../Utils/utils";
+import { Icon } from "../Icon";
 
 
 const Watch = () => {
@@ -102,6 +103,7 @@ const Watch = () => {
                 {(tasks[currentTask].state !== 'finished' && pomodoro === 0)&& (
                     <>
                         {/* <Text className="clock bold">{convertToClock(leftSeconds)}</Text> */}
+                        <Icon title="Pomodoro Habilitado" className={`fa fa-coffee ${!tasks[currentTask].pomodoro ? 'hidden':''}`} />
                         <div style={{display: 'flex', alignItems: 'baseline'}}>
                             <Text className="clock bold">{formatTime(leftSeconds).hour}:{formatTime(leftSeconds).minutes}</Text>
                             <Text className="bold">{formatTime(leftSeconds).seconds} s</Text>
@@ -111,6 +113,7 @@ const Watch = () => {
                 )}
                 {pomodoro > 0 && (
                     <>
+                        <Icon className="fa fa-coffee" />
                         <div style={{display: 'flex', alignItems: 'baseline'}}>
                             <Text className="clock bold">{formatTime(pomodoro).minutes}:{formatTime(pomodoro).seconds}</Text>
                         </div>

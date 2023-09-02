@@ -16,5 +16,8 @@ export const Icon = styled.i`
         &.red {
             color: ${theme.cancel} !important;
         }
+        &.hidden {
+            visibility: hidden;
+        }
     `}
 `;

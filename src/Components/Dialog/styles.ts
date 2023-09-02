@@ -1,44 +1,46 @@
+import { Modal } from "react-bootstrap";
 import { css, keyframes, styled } from "styled-components";
 
-const showAnim = keyframes`
-    0% {
-        transform: translateY(100vh);
-    }
-    
-`;
-
-const hideAnim = keyframes`
-    100% {
-        transform: translateY(100vh);
-    }
-    
-`;
 
 
-export const Container = styled.div`
+//bootstrap
+export const Header = styled(Modal.Header)`
     ${({ theme }) => css`
-        overflow: hidden;
-        position: absolute;
-        background-color: rgba(0,0,0,0.5);
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        justify-content: center;
-        align-items: center;
-        &.show {
-            z-index: 100000;
-            display: flex;
-        }
-        &.hidden {
-            z-index: -100000;
-            display: none;
-        }
-        &.show div {
-            animation: ${showAnim} 0.25s;
-        }
+        background-color: ${theme.background.default} !important;
+        border: none !important;
     `}
 `;
+
+export const Body = styled(Modal.Body)`
+    ${({ theme }) => css`
+        display: flex;
+        flex-direction: column;
+        background-color: ${theme.background.default} !important;
+    `}
+`;
+
+export const Footer = styled(Modal.Footer)`
+    ${({ theme }) => css`
+        border: none !important;
+        background-color: ${theme.background.default} !important;
+    `}
+`;
+
+export const Title = styled(Modal.Title)`
+    ${({ theme }) => css`
+        color: ${theme.text.primary} !important;
+    `}
+`;
+
+
+
+
+
+
+
+
+
+
 
 export const ModalCard = styled.div`
     ${({ theme }) => css`
@@ -106,14 +108,6 @@ export const Input = styled.input`
         outline: none;
         border-bottom: 2px solid ${theme.primary};
         color: ${theme.text.primary};
-    `}
-`;
-
-export const Title = styled.h4`
-    ${({ theme }) => css`
-        margin: 0px;
-        color: ${theme.text.primary};
-        cursor: pointer;
     `}
 `;
 
