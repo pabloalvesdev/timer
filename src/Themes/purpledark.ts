@@ -3,16 +3,17 @@
 
 import { ITheme } from "../Interfaces";
 
-const light: ITheme = {
+const purpledark: ITheme = {
     background: {
-        default: '#edf2f4',
-        alternative: '#CED4DA'
+        //default: '#2B2D42',
+        default: '#202231',
+        alternative: '#181925'
     },
     primary: '#6C82EF',
     text: {
-        primary: '#202231',
+        primary: '#edf2f4',
         // secondary: grey[600],
-        // disabled: grey[200]
+        // disabled: grey[700]
         secondary: 'grey',
         disabled: 'grey'
     },
@@ -21,6 +22,6 @@ const light: ITheme = {
     warning: 'yellow',
     transition: 0.25,
     shadow: ''
-};
+}
 
-export default light;
+export default purpledark;

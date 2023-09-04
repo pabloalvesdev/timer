@@ -8,11 +8,13 @@ import Text from "../Text";
 import { Button } from "../Button";
 import { formatTime, hexToRGBA } from "../../Utils/utils";
 import { Icon } from "../Icon";
+import CustomSwitch from "../Switch";
+import SelectTheme from "../SelectTheme";
 
 
 const Watch = () => {
-    const { theme, tasks, setTasks, currentTask, setCurrentTask } = useAppContext();
-    const currentTheme = Themes["dark"];
+    const { theme, tasks, setTasks, currentTask, setCurrentTask, setTheme } = useAppContext();
+    const currentTheme = Themes[theme];
 
     const [transition, setTransition] = useState(5);
     const [pomodoro, setPomodoro] = useState(0);
@@ -79,6 +81,8 @@ const Watch = () => {
 
     return(
         <Container>
+            {/* <CustomSwitch onChange={() => console.log("change")} /> */}
+            <SelectTheme />
             <CircularProgressbarWithChildren
             value={pomodoro > 0 ? 100-((pomodoro/300)*100) : 100-((leftSeconds/tasks[currentTask].duration)*100)}
             styles={{

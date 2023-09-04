@@ -3,7 +3,7 @@ import { IDialog, ITheme } from "../Interfaces";
 import ITask from "../Interfaces/ITask";
 import DefaultJson from "../defalttasks.json";
 
-type ThemeEnum = "light" | "dark";
+export type ThemeEnum = "purplelight" | "purpledark" | "reddark" | "redlight";
 
 interface IAppContext {
     theme: ThemeEnum;
@@ -23,7 +23,7 @@ interface Props {
 const AppContext = createContext<IAppContext>({} as IAppContext);
 
 const AppContextProvider = ({ children }: Props) => {
-    const [theme, setTheme] = useState<ThemeEnum>("dark");
+    const [theme, setTheme] = useState<ThemeEnum>("purpledark");
     const [dialog, setDialog] = useState<IDialog>({} as IDialog);
     const [tasks, setTasks] = useState<ITask[]>(DefaultJson.tasks as ITask[]);
     const [currentTask, setCurrentTask] = useState(0);
