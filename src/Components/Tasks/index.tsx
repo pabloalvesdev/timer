@@ -41,6 +41,7 @@ const Tasks = () => {
                     </Row>
                     <List>
                     {tasks.filter((x, i) => i !== currentTask && i !== (currentTask + 1) && x.state !== "finished").map(a => <ListItem item={a} />)}
+                    {!tasks.filter((x, i) => i !== currentTask && i !== (currentTask + 1) && x.state !== "finished").length && <p>Não há itens na fila, adicione novos</p>}
                     </List>
                 </Card>
             </Col>

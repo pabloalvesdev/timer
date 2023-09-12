@@ -18,7 +18,7 @@ const SelectTheme = () => {
         // dentro desse popover eu jogo as cores
         <RowPopover onClick={(a: any) => setTheme(a.target.parentNode.id || theme)} id="popover-positioned-top" title="Popover top">
             <p>Selecione um Tema</p>
-            <div style={{display: "flex", justifyContent: 'space-around'}}>
+            <div style={{display: "flex", justifyContent: 'space-around', columnGap: 5}}>
                 {/* {Object.keys(Themes).filter(a => a !== theme).map(a => <ColoredCircle id={a} color1={Themes[a as ThemeEnum].primary} color2={Themes[a as ThemeEnum].background.default} />)} */}
                 {Object.keys(Themes).map(a => <ColoredCircle id={a} color1={Themes[a as ThemeEnum].primary} color2={Themes[a as ThemeEnum].background.default} />)}
             </div>

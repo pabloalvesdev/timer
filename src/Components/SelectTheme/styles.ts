@@ -5,14 +5,15 @@ export const Container = styled.div`
     ${({ theme }) => css`
         display: flex;
         overflow: hidden;
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
         border-radius: 100%;
+        border: 2px solid ${theme.text.primary};
         &:hover {
             cursor: pointer;
         }
         &.selected {
-            border: 3px solid white;
+            box-shadow: 0px 0px 5px 5px ${theme.primary};
         }
     `}
 `;
@@ -20,7 +21,7 @@ export const Container = styled.div`
 export const Cor = styled.div`
     ${({ theme }) => css`
         width: 12.5px;
-        height: 25px;
+        height: 30px;
     `}
 `;
 
