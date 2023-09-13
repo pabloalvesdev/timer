@@ -19,8 +19,8 @@ const SelectTheme = () => {
     const ColoredCircle = ({ color, id }: Props) => <Container className={id === newTheme.primary ? 'selected' : ''} id={id} style={{backgroundColor: color}}/>
     const [newTheme, setNewTheme] = useState<{mode: 'light' | 'dark', primary: string}>({mode: 'dark', primary: Pallete.primary[0]});
     const toogleMode = (e: any) => {
-        const element = e.target;
-        setNewTheme(a => ({...a, mode: element.id}));
+        const elementId = e.target.parentElement.id || e.target.id;
+        setNewTheme(a => ({...a, mode: elementId}));
     }
     const tooglePrimary = (e: any) => {
         const element = e.target;
@@ -34,8 +34,8 @@ const SelectTheme = () => {
         <RowPopover id="popover-positioned-top" title="Popover top">
             <p style={{margin: 0}}>Modo</p>
             <div style={{display: "flex", justifyContent: 'center'}}>
-                <Button onClick={toogleMode} className={newTheme.mode === 'light' ? 'selected' : ''} id="light"><Icon className="fa fa-moon-o" /></Button>
-                <Button onClick={toogleMode} className={newTheme.mode === 'dark' ? 'selected' : ''} id="dark"><Icon className="fa fa-sun-o" /></Button>
+                <Button onClick={toogleMode} className={newTheme.mode === 'light' ? 'selected' : ''} id="light"><Icon onClick={toogleMode} className="fa fa-moon-o" /></Button>
+                <Button onClick={toogleMode} className={newTheme.mode === 'dark' ? 'selected' : ''} id="dark"><Icon onClick={toogleMode} className="fa fa-sun-o" /></Button>
             </div>
             <p style={{margin: 0}}>Cor Principal</p>
             <div onClick={tooglePrimary} style={{display: "flex", justifyContent: 'center', columnGap: 10}}>

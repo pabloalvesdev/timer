@@ -43,10 +43,10 @@ export const Button = styled.button`
             color: ${Pallete.dark.text.primary};
         }
         &#light{
-            border-radius: 5px 0px 0px 5px;
+            border-radius: 7px 0px 0px 7px;
         }
         &#dark{
-            border-radius: 0px 5px 5px 0px;
+            border-radius: 0px 7px 7px 0px;
         }
     `}
 `;
