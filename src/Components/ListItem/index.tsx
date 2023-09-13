@@ -26,7 +26,7 @@ const ListItem = ({ item }:Props) => {
                 <Col xs={10}>
                     <Text><b>{item.title}</b> {friendlyHour(item.duration)}</Text>
                 </Col>
-                <Col style={{ display: 'flex', columnGap: 30, flexDirection: 'row' }} xs={2}>
+                <Col style={{ display: 'flex', columnGap: 10, flexDirection: 'row' }} xs={2}>
                     <Icon title="Pomodoro Habilitado" className={`fa fa-coffee ${!item.pomodoro ? 'hidden':''}`} />    
                     <Icon title="Excluir" onClick={confirmDelete} className="fa fa-close red" />
                 </Col>

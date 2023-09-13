@@ -1,5 +1,6 @@
 import { Popover } from "react-bootstrap";
 import { css, styled } from "styled-components";
+import Pallete from "../../Themes";
 
 export const Container = styled.div`
     ${({ theme }) => css`
@@ -18,10 +19,35 @@ export const Container = styled.div`
     `}
 `;
 
+// export const Cor = styled.div`
+//     ${({ theme }) => css`
+//         width: 12.5px;
+//         height: 30px;
+//     `}
+// `;
+
 export const Cor = styled.div`
     ${({ theme }) => css`
-        width: 12.5px;
+        width: 30px;
         height: 30px;
+    `}
+`;
+export const Button = styled.button`
+    ${({ theme }) => css`
+        width: 100%;
+        background-color: ${theme.background.alternative};
+        color: ${theme.text.primary};
+        border: 2px solid ${theme.text.primary};
+        &.selected {
+            background-color: ${theme.primary};
+            color: ${Pallete.dark.text.primary};
+        }
+        &#light{
+            border-radius: 5px 0px 0px 5px;
+        }
+        &#dark{
+            border-radius: 0px 5px 5px 0px;
+        }
     `}
 `;
 

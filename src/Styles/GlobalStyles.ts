@@ -28,8 +28,15 @@ const GlobalStyles = createGlobalStyle`
         body {
             background-color: var(--bg-color);
         }
+        body, spam, svg, path, p, h1, h2, h3, h4, h5 { //falta adicionar div e button
+            transition: all 0.5s ease-in !important;
+        }
         p {
             color: ${theme.text.primary};
+        }
+        .popover-arrow::after {
+            transition: all 0.5s ease-in !important;
+            border-right-color: var(--bg-color) !important;
         }
     `}
 `;

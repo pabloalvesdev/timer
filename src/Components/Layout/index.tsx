@@ -1,14 +1,14 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import Themes from "../../Themes";
 import { useAppContext } from "../../Context";
+import { useTheme } from "styled-components";
 
 interface Props {
     children: any;
 }
 
 const Layout = ({ children }: Props) => {
-    const { theme } = useAppContext();
+    const theme = useTheme();
     return(
     <Container>
       <br /><br />
@@ -18,7 +18,7 @@ const Layout = ({ children }: Props) => {
             lg={5}
             sm={12}
             style={{
-                backgroundColor: Themes[theme].background.alternative,
+                backgroundColor: theme.background.alternative,
                 borderRadius: 10,
                 display: 'flex',
                 justifyContent: 'center',

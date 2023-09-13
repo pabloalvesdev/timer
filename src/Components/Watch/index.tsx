@@ -3,18 +3,18 @@ import { Container } from "./styles";
 import { CircularProgressbar, CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
 import ITask from "../../Interfaces/ITask";
 import { useAppContext } from "../../Context";
-import Themes from "../../Themes";
 import Text from "../Text";
 import { Button } from "../Button";
 import { formatTime, hexToRGBA } from "../../Utils/utils";
 import { Icon } from "../Icon";
 import CustomSwitch from "../Switch";
 import SelectTheme from "../SelectTheme";
+import { useTheme } from "styled-components";
 
 
 const Watch = () => {
-    const { theme, tasks, setTasks, currentTask, setCurrentTask, setTheme } = useAppContext();
-    const currentTheme = Themes[theme];
+    const { tasks, setTasks, currentTask, setCurrentTask } = useAppContext();
+    const currentTheme = useTheme();
 
     const [transition, setTransition] = useState(5);
     const [pomodoro, setPomodoro] = useState(0);
