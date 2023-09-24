@@ -11,16 +11,16 @@ import CustomSwitch from "../Switch";
 import SelectTheme from "../SelectTheme";
 import { useTheme } from "styled-components";
 import InputFile from "../InputFIle";
+import AllFinishedModal from "../AllFinishedModal";
 
 
 const Watch = () => {
     const { tasks, setTasks, currentTask, setCurrentTask } = useAppContext();
     const currentTheme = useTheme();
-
     const [transition, setTransition] = useState(5);
     const [pomodoro, setPomodoro] = useState(0);
     const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask]?.duration || 0);
-    const [allFinished, setAllFinished] = useState<boolean>(false);
+    const [allFinished, setAllFinished] = useState<boolean>(true); //aqui que coontrola o modal dizendo que vc finalizou tudo
     
     //functions
     const countDown = () => {
@@ -137,15 +137,16 @@ const Watch = () => {
                 )}
                 {(leftSeconds === 0 && tasks.length === 0 && (
                     <>
-                        <Text>No Tasks</Text>
-                        <InputFile /> 
+                        <h2 className="title">Sem Tarefas</h2>
+                        <Text className="bold">Pra começar adicione novas tarefas</Text>
+                        <InputFile />
                         {/* PAREI AQUI: terminar de estilizar isto mais tarde
                         colocando o nome do arquivo quando for selecionado
                         e botoes de limpar e enviar. */}
                     </>
                 ))}
                 <Button className={tasks[currentTask]?.state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
-                {allFinished && <Text>Parabéns!!! Você finalizou tudo. Insira novas tasks</Text>}
+                <AllFinishedModal visible={allFinished} setVisible={setAllFinished} />
             </CircularProgressbarWithChildren>
         </Container>
     )
