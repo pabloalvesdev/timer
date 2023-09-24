@@ -17,14 +17,15 @@ const Tasks = () => {
     const callModal = () => setVisibleModal(true)
     useEffect(()=>{
         setNextTask(tasks[currentTask+1])
-    }, [currentTask])
+    }, [currentTask, tasks])
     return(
         <Row>
             <AddEditModal visible={visibleModal} setVisible={setVisibleModal} />
             <Col>
                 <Card>
                     <Title><b>Próxima</b></Title>
-                    <ListItem item={nextTask} />
+                    {!(tasks.length !== 0) && <p>Nao há um próximo item</p>}
+                    {tasks.length !== 0 && <ListItem item={nextTask} />}
                     {/* <Text className="bold">{`${nextTask.title} - ${friendlyHour(nextTask.duration)}`|| 'Nada'}</Text> */}
                 </Card>
                 <br />

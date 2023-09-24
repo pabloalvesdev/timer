@@ -10,6 +10,7 @@ import { Icon } from "../Icon";
 import CustomSwitch from "../Switch";
 import SelectTheme from "../SelectTheme";
 import { useTheme } from "styled-components";
+import InputFile from "../InputFIle";
 
 
 const Watch = () => {
@@ -18,7 +19,7 @@ const Watch = () => {
 
     const [transition, setTransition] = useState(5);
     const [pomodoro, setPomodoro] = useState(0);
-    const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask].duration || 0);
+    const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask]?.duration || 0);
     const [allFinished, setAllFinished] = useState<boolean>(false);
     
     //functions
@@ -51,7 +52,6 @@ const Watch = () => {
         const novasTasks = [...tasks]; // Criando uma cópia do array de tasks
         novasTasks[indice] = {
             duration: tasks[indice].duration,
-            position: tasks[indice].position,
             state: action,
             title: tasks[indice].title,
             pomodoro: tasks[indice].pomodoro
@@ -68,23 +68,26 @@ const Watch = () => {
     }
     
     useEffect(()=>{
-        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro === 0) countDown();
-        if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro > 0) countDownPomodoro();
-        if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition();
-        if(leftSeconds !== tasks[currentTask].duration && availableToPomodoro(leftSeconds) && tasks[currentTask].state === 'execute' && pomodoro === 0 && leftSeconds !== 0) setPomodoro(300);
-        if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
-            atualizarEstadoTask(currentTask, 'finished')
-            if(tasks[currentTask+1] === undefined) setAllFinished(true)
-            else setTimeout(()=>loadNextTask(), 5000)
+        if(tasks.length !== 0){
+            if(leftSeconds === 0 && currentTask === 0 && tasks[currentTask].state === "waiting") setLeftSeconds(tasks[currentTask].duration);
+            if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro === 0) countDown();
+            if(tasks[currentTask].state === 'execute' && leftSeconds >= 1 && pomodoro > 0) countDownPomodoro();
+            if(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) countDownTransition();
+            if(leftSeconds !== tasks[currentTask].duration && availableToPomodoro(leftSeconds) && tasks[currentTask].state === 'execute' && pomodoro === 0 && leftSeconds !== 0) setPomodoro(300);
+            if(tasks[currentTask].state === 'execute' && leftSeconds === 0) {
+                atualizarEstadoTask(currentTask, 'finished')
+                if(tasks[currentTask+1] === undefined) setAllFinished(true)
+                else setTimeout(()=>loadNextTask(), 5000)
+            }
         }
     },[tasks, leftSeconds, transition, pomodoro])
-
+    
     return(
         <Container>
             {/* <CustomSwitch onChange={() => console.log("change")} /> */}
             <SelectTheme />
             <CircularProgressbarWithChildren
-            value={pomodoro > 0 ? 100-((pomodoro/300)*100) : 100-((leftSeconds/tasks[currentTask].duration)*100)}
+            value={tasks.length === 0 ? 0 : pomodoro > 0 ? 100-((pomodoro/300)*100) : 100-((leftSeconds/tasks[currentTask].duration)*100)}
             styles={{
                 path: {
                   stroke: pomodoro > 0 ? currentTheme.cancel : currentTheme.primary,
@@ -104,15 +107,15 @@ const Watch = () => {
                 },
               }}
             >
-                {(tasks[currentTask].state !== 'finished' && pomodoro === 0)&& (
+                {(tasks.length !== 0 && tasks[currentTask].state !== 'finished' && pomodoro === 0)&& (
                     <>
                         {/* <Text className="clock bold">{convertToClock(leftSeconds)}</Text> */}
-                        <Icon title="Pomodoro Habilitado" className={`fa fa-coffee ${!tasks[currentTask].pomodoro ? 'hidden':''}`} />
+                        <Icon title="Pomodoro Habilitado" className={`fa fa-coffee ${!tasks[currentTask]?.pomodoro ? 'hidden':''}`} />
                         <div style={{display: 'flex', alignItems: 'baseline'}}>
                             <Text className="clock bold">{formatTime(leftSeconds).hour}:{formatTime(leftSeconds).minutes}</Text>
                             <Text className="bold">{formatTime(leftSeconds).seconds} s</Text>
                         </div>
-                        <Text className="bold">{tasks[currentTask].title}</Text>
+                        <Text className="bold">{tasks[currentTask]?.title}</Text>
                     </>
                 )}
                 {pomodoro > 0 && (
@@ -125,14 +128,23 @@ const Watch = () => {
                         <Text>Pausa de 5 min, vai tomar um cafe</Text>
                     </>
                 )}
-                {(leftSeconds === 0 && tasks[currentTask].state === "finished" && !allFinished) && (
+                {(leftSeconds === 0 && tasks[currentTask]?.state === "finished" && !allFinished) && (
                     <>
                         <Text><b>{tasks[currentTask].title}</b> finalizada</Text>
                         {/* <Text>Preparando para {tasks[currentTask+1]?.title}</Text> */}
                         <Text><b>{tasks[currentTask+1]?.title}</b> estará pronta em <b>{transition}</b></Text>
                     </>
                 )}
-                <Button className={tasks[currentTask].state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
+                {(leftSeconds === 0 && tasks.length === 0 && (
+                    <>
+                        <Text>No Tasks</Text>
+                        <InputFile /> 
+                        {/* PAREI AQUI: terminar de estilizar isto mais tarde
+                        colocando o nome do arquivo quando for selecionado
+                        e botoes de limpar e enviar. */}
+                    </>
+                ))}
+                <Button className={tasks[currentTask]?.state === 'waiting' ? '':'hide'} onClick={startTask}>Iniciar</Button>
                 {allFinished && <Text>Parabéns!!! Você finalizou tudo. Insira novas tasks</Text>}
             </CircularProgressbarWithChildren>
         </Container>

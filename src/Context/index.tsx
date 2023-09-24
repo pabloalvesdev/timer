@@ -29,7 +29,8 @@ const AppContext = createContext<IAppContext>({} as IAppContext);
 const AppContextProvider = ({ children }: Props) => {
     const [theme, setTheme] = useState<ThemeConfig>({mode: 'dark', primary: Pallete.primary[0]});
     const [dialog, setDialog] = useState<IDialog>({} as IDialog);
-    const [tasks, setTasks] = useState<ITask[]>(DefaultJson.tasks as ITask[]);
+    // const [tasks, setTasks] = useState<ITask[]>(DefaultJson.tasks as ITask[]);
+    const [tasks, setTasks] = useState<ITask[]>([] as ITask[]);
     const [currentTask, setCurrentTask] = useState(0);
     const values = useMemo<IAppContext>(()=>({
         theme,

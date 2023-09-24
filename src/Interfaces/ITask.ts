@@ -1,5 +1,4 @@
 interface ITask {
-    position: number;
     title: string;
     duration: number;
     pomodoro: boolean;
