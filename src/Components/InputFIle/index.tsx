@@ -3,7 +3,7 @@ import { Icon } from "../Icon";
 import Text from "../Text";
 import { useAppContext } from "../../Context";
 import ITask from "../../Interfaces/ITask";
-import { Button, Label } from "./styles";
+import { Button, Label, Row } from "./styles";
 
 const InputFile = () => {
     const [file, setFile] = useState({content: '', name: ''});
@@ -48,10 +48,11 @@ const InputFile = () => {
         <>
             <input type="file" onChange={handleFileChange} id="input-file" style={{display: 'none'}} />
             <Label htmlFor="input-file">
-                {file.name || 'Nenhum arquivo'}
-                <Icon className="fa fa-upload" />
-                <br />
-                <div>
+                <Row>
+                    <p>{file.name || 'Nenhum arquivo'}</p>
+                    <Icon className="fa fa-upload" />
+                </Row>
+                <Row>
                     <Button onClick={setList} hidden={file.content.length===0} className="submit">
                         Enviar
                         <Icon className="fa fa-check" />
@@ -60,7 +61,7 @@ const InputFile = () => {
                         Apagar
                         <Icon className="fa fa-close" />
                     </Button>
-                </div>
+                </Row>
             </Label>
         </>
     )

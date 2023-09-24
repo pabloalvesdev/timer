@@ -29,3 +29,11 @@ export const Label = styled.label`
         }
     `}
 `;
+
+export const Row = styled.div`
+    ${({ theme }) => css`
+        display: flex;
+        align-items: baseline;
+        justify-content: space-around;
+    `}
+`;

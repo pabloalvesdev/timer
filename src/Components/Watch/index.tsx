@@ -20,7 +20,7 @@ const Watch = () => {
     const [transition, setTransition] = useState(5);
     const [pomodoro, setPomodoro] = useState(0);
     const [leftSeconds, setLeftSeconds] = useState(tasks[currentTask]?.duration || 0);
-    const [allFinished, setAllFinished] = useState<boolean>(true); //aqui que coontrola o modal dizendo que vc finalizou tudo
+    const [allFinished, setAllFinished] = useState<boolean>(false);
     
     //functions
     const countDown = () => {

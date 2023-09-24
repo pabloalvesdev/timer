@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import ITask from "../../Interfaces/ITask";
-import { Body, ContainerInputs, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
+import { Body, ContainerInputs, Header, Icon, Title } from "./styles";
 import { Button } from "../Button";
 import { useAppContext } from "../../Context";
 import CustomSwitch from "../Switch";
+import Text from "../Text";
 
 interface Props {
     visible: boolean;
@@ -13,7 +14,6 @@ interface Props {
 }
 
 const AllFinishedModal = ({ visible, setVisible, item }:Props) => {
-    const { tasks, setTasks } = useAppContext();
     const handleClose = () => {
         setVisible(false);
     }
@@ -23,11 +23,10 @@ const AllFinishedModal = ({ visible, setVisible, item }:Props) => {
                 <Title>Parabéns!!!</Title>
             </Header>
             <Body>
-                <Row>
-                    <Col>
-                        <h2>Vc chegou ao fim de tudo</h2>
-                    </Col>
-                </Row>
+                <center><Icon className="fa fa-check-circle" aria-hidden="true" /></center>
+                <br />
+                <Text>Todas as tarefas foram completadas</Text>
+                <br />
                 <Button onClick={handleClose}>Sair</Button>
             </Body>
         </Modal>

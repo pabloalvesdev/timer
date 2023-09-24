@@ -31,7 +31,7 @@ const GlobalStyles = createGlobalStyle`
         body, spam, svg, path, p, h1, h2, h3, h4, h5 { //falta adicionar div e button
             transition: all 0.5s ease-in !important;
         }
-        p,h1,h2 {
+        p,h1,h2,h3,h4,h5 {
             color: ${theme.text.primary};
         }
         .popover-arrow::after {

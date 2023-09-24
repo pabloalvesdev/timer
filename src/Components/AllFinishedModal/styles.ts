@@ -30,17 +30,6 @@ export const Title = styled(Modal.Title)`
     `}
 `;
 
-export const Input = styled.input`
-    ${({ theme }) => css`
-        /* margin: 0px; */
-        background: none;
-        border: none;
-        outline: none;
-        border-bottom: 2px solid ${theme.primary};
-        color: ${theme.text.primary};
-    `}
-`;
-
 // export const TimeInput = styled.input`
 //     ${({ theme }) => css`
 //         padding: 2px;
@@ -57,18 +46,6 @@ export const Input = styled.input`
 //     `}
 // `;
 
-export const TimeInput = styled.input`
-    ${({ theme }) => css`
-        background: none;
-        border: 2px solid ${theme.primary};
-        outline: none;
-        width: 100%;
-        height: 50px;
-        color: ${theme.text.primary};
-        border-radius: 5px;
-    `}
-`;
-
 
 export const ContainerInputs = styled.div`
     ${({ theme }) => css`
@@ -80,19 +57,11 @@ export const ContainerInputs = styled.div`
 `;
 
 
-export const InvalidText = styled.p`
-    ${({ theme }) => css`
-        margin-top: 10px;
-        font-size: 10px;
-        color: red;
-        &.hide {
-            visibility: hidden;
-        }
-    `}
-`;
 
-export const InputLabel = styled.label`
+
+export const Icon = styled.i`
     ${({ theme }) => css`
-        color: ${theme.text.primary};
+        color: ${theme.confirm};
+        font-size: 70px;
     `}
 `;
