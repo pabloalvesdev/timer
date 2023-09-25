@@ -36,7 +36,7 @@ const Tasks = () => {
                         </Col>
                         <Col xs={1}>
                             <Row>
-                                <i onClick={callModal} className="fa fa-plus" aria-hidden="true" />
+                                <Icon onClick={callModal} className="fa fa-plus" aria-hidden="true" />
                             </Row>
                         </Col>
                     </Row>

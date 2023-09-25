@@ -14,7 +14,7 @@ export const Card = styled.div`
         padding-block: 10px;
         width: 100%;
         &.more-pg {
-            height: 30vh;
+            height: 60vh;
             /* overflow-y: scroll; */
         }
         @media (max-width: 990px) {
