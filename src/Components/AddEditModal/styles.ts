@@ -69,17 +69,6 @@ export const TimeInput = styled.input`
     `}
 `;
 
-
-export const ContainerInputs = styled.div`
-    ${({ theme }) => css`
-        /* margin: 0px; */
-        display: flex;
-        align-items: baseline;
-        justify-content: baseline;
-    `}
-`;
-
-
 export const InvalidText = styled.p`
     ${({ theme }) => css`
         margin-top: 10px;
@@ -94,5 +83,33 @@ export const InvalidText = styled.p`
 export const InputLabel = styled.label`
     ${({ theme }) => css`
         color: ${theme.text.primary};
+    `}
+`;
+
+export const CustomRow = styled.div`
+    ${({ theme }) => css`
+        display: flex;
+        justify-content: space-around;
+        color: ${theme.text.primary};
+        & input{
+            background: none !important;
+            width: 30%;
+            outline: none;
+            text-align: center;
+            color: ${theme.text.primary};
+            border: none;
+            border: 2px solid ${theme.primary};
+            border-radius: 5px;
+        }
+        & input#hour {
+            background-color: red !important;
+            content: "h";
+        }
+        & input#minute::after {
+            content: "m";
+        }
+        & input#second::after {
+            content: "s";
+        }
     `}
 `;

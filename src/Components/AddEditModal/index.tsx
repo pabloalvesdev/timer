@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import ITask from "../../Interfaces/ITask";
-import { Body, ContainerInputs, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
+import { Body, CustomRow, Header, Input, InputLabel, InvalidText, TimeInput, Title } from "./styles";
 import { Button } from "../Button";
 import { useAppContext } from "../../Context";
 import CustomSwitch from "../Switch";
@@ -15,7 +15,7 @@ interface Props {
 const AddEditModal = ({ visible, setVisible, item }:Props) => {
     const { tasks, setTasks } = useAppContext();
     const [task, setTask] = useState<ITask>({} as ITask);
-    const [time, setTime] = useState(0);
+    const [time, setTime] = useState({hour:0,minute:0,second:0});
     const [invalid, setInvalid] = useState<boolean>(false);
     const handleClose = () => {
         setVisible(false);
@@ -31,12 +31,12 @@ const AddEditModal = ({ visible, setVisible, item }:Props) => {
         if(tasks.map(a => a.title).includes(e.target.value)) setInvalid(true)
         else setInvalid(false)
     setTask(prev => ({...prev, title: e.target.value}))
-};
-const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inpText = e.target.value.split(':').map(a => Number(a));
-        const totalTime = (inpText[0]*3600)+(inpText[1]*60);
-        setTask(prev => ({...prev, duration: totalTime}));
-    }
+    };
+    const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const uni = e.target.id;
+        setTime(prev => ({...prev, [uni]: e.target.value }))
+    };
+    useEffect(()=>console.log(Number(time.hour*3600)+Number(time.minute*60)+Number(time.second)),[time])
     return(
         <Modal size="sm" show={visible} onHide={handleClose}>
             <Header>
@@ -52,13 +52,17 @@ const handleChangeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
                 </Row>
                 <Row>
                     <Col>
-                        <InputLabel>Tempo</InputLabel>
+                        <InputLabel>Tempo (hh:mm:ss)</InputLabel>
+                        <CustomRow>
+                            <input min={0} value={time.hour} onChange={handleChangeTime} id="hour" max={10} type="number" />
+                            <input min={0} value={time.minute} onChange={handleChangeTime} id="minute" max={59} type="number" />
+                            <input min={0} value={time.second} onChange={handleChangeTime} id="second" max={59} type="number" />
+                        </CustomRow>
                         <br />
-                        <TimeInput onChange={handleChangeTime} type="time" />
                     </Col>
                 </Row>
                 <br />
-                <Row style={{ visibility: availableToPomodoro(task.duration) ? 'visible' : 'hidden' }}>
+                <Row style={{ visibility: availableToPomodoro(Number(time.hour*3600)+Number(time.minute*60)+Number(time.second)) ? 'visible' : 'hidden' }}>
                     <Col>
                         <CustomSwitch onChange={() => setTask(prev => ({...prev, pomodoro: !prev.pomodoro}))} labelToSwitch="Habilitar Pomodoro?" />
                     </Col>
