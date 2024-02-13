@@ -1,5 +1,0 @@
-Atividade 1 | 30 | pomodoro
-Atividade 2 | 80
-Atividade 3 | 100
-Atividade 6 | 20 | pomodoro
-Atividade 4 | 10
